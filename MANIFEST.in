@@ -1,0 +1,4 @@
+recursive-include artists/public *
+include artists/public/favicon.ico
+recursive-include artists/i18n *
+recursive-include artists/templates *
