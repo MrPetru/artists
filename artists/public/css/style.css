@@ -317,3 +317,6 @@ font-weight:bold;
 div.clearingdiv {
 clear:both;
 }
+td {
+border: 1px solid #000
+}
