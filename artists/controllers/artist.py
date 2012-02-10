@@ -15,7 +15,7 @@ from artists.lib.base import BaseController
 from artists.model import *
 from artists.model.artist import * #Artist, Role
 from repoze.what import predicates
-from tg import redirect, config, url
+from tg import redirect, config, url, tmpl_context
 #from artists.model import DeclarativeBase, metadata, DBSession
 
 from repoze.what.predicates import in_group
@@ -25,25 +25,11 @@ from artists.lib import helpers
 
 import shutil
 
-class AddForm(tw2.forms.TableForm):
-            action = '/artist/post_add'
-            firstname = tw2.forms.TextField(label='NOME', validator=tw2.core.Required)
-            lastname = tw2.forms.TextField(label='COGNOME', validator=tw2.core.Required)
-            sitelink = tw2.forms.TextField(label='SITE LINK', validator=tw2.core.Required)
-            reellink = tw2.forms.TextField(label='REEL LINK', validator=tw2.core.Required)
-            role = tw2.forms.TextField(label='RUOLO', validator=tw2.core.Required)
-            software = tw2.forms.TextField(label='SOFTWARE', validator=tw2.core.Required)
-            tags = tw2.forms.TextField(label='TAGS', validator=tw2.core.Required)
-            phone = tw2.forms.TextField(label='PHONE', validator=tw2.core.Required)
-            email = tw2.forms.TextField(label='EMAIL', validator=tw2.core.Required)
-            skype = tw2.forms.TextField(label='SKYPE', validator=tw2.core.Required)
-            othercontacts = tw2.forms.TextField(label='OTHER CONTACTS', validator=tw2.core.Required)
-            note = tw2.forms.TextArea(label='NOTE', validator=tw2.core.Required)
-            cv_upload = tw2.forms.FileField()
-            newartist = tw2.forms.RadioButtonList(label='NEW ARTIST', options=[[1, 'YES'],[0, 'NO']], default=1)
-            
-#add_form = AddForm(redirect='/artis/get_all').req()
+from artists.lib.widgets import AddForm, AristTable
+
+
 add_form = AddForm()
+get_all_form = AristTable()
 
 class GetAllTble(tw2.forms.TableLayout):
     pass
@@ -60,6 +46,7 @@ class Controller(BaseController):
     @expose('artists.templates.get_all')
     def get_all(self):
         artists = DBSession.query(Artist).order_by(Artist.firstname).all()
+        tmpl_context.get_all_form = get_all_form
         return dict(page='artists', artists=artists)
     
     @require(in_group('admins')) 

@@ -4,8 +4,9 @@
 <head>
     ${self.meta()}
     <title>${self.title()}</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/style.css')}" />
+    ##<link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/style.css')}" />
     <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/admin.css')}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/artists_style.css')}" />
 </head>
 <body class="${self.body_class()}">
   ${self.header()}
@@ -74,8 +75,7 @@
 <%def name="header()">
   <div id="header">
   	<h1>
-  		Welcome to TurboGears 2
-		<span class="subtitle">The Python web metaframework</span>
+  		Welcome to Artist Base ... In help for CG projects admins
 	</h1>
   </div>
 </%def>

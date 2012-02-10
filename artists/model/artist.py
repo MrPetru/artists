@@ -52,6 +52,29 @@ class Artist(DeclarativeBase):
     # others
     
     #}
+    
+    @property
+    def artist_info(self):
+        name = '%s %s' % (self.firstname, self.lastname)
+        role = ''
+        for r in self.role:
+            role += r.name + ', '
+        software = ''
+        for s in self.software:
+            software += s.name + ', '
+        tags = ''
+        for t in self.tags:
+            tags += t.name + ', '
+        return {'name': name, 'role': role, 'software':software, 'tags':tags}
+        
+    @property
+    def artist_links(self):
+        return {'reel': self.reellink, 'cv':self.cvlocal, 'contacts':''}
+        
+    @property
+    def artist_description(self):
+        return {'artist_short_description':'&nbsp;&nbsp;&nbsp;&nbsp;%s' % self.note,
+        'artist_title' : "Short description:"}
 
 class Phone(DeclarativeBase):
     __tablename__ = 'phone'
