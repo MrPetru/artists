@@ -15,7 +15,7 @@ from artists.lib.base import BaseController
 from artists.model import *
 from artists.model.artist import * #Artist, Role
 from repoze.what import predicates
-from tg import redirect, config, url, tmpl_context
+from tg import redirect, config, url, tmpl_context, response
 #from artists.model import DeclarativeBase, metadata, DBSession
 
 from repoze.what.predicates import in_group
@@ -23,7 +23,7 @@ import tw2.core, tw2.forms
 import transaction
 from artists.lib import helpers
 
-import shutil
+import shutil, mimetypes
 
 from artists.lib.widgets import AddForm, AristTable
 
@@ -41,6 +41,10 @@ class Controller(BaseController):
     @expose()
     def default(self):
         redirect('/artist/get_all')
+    
+    @expose()    
+    def contacts(self):
+        return ("<h1>PAGE NOT FOUND</h1>")
     
     @require(in_group('admins'))   
     @expose('artists.templates.get_all')
@@ -144,8 +148,11 @@ class Controller(BaseController):
         
     @expose()
     def download(self, file_name):
-    
-        f = shutil.os.path.join(config['cv_repo'], file_name)
+        firstname, lastname = file_name.split('_')
+        artist = DBSession.query(Artist).filter_by(firstname=firstname, lastname=lastname).all()
+        cvlocal = artist[0].cvlocal
+        path = shutil.os.path.join(config['cv_repo'], cvlocal)
+        f = open(path)
         
         # set the correct content-type so the browser will know what to do
         content_type, encoding = mimetypes.guess_type(path)

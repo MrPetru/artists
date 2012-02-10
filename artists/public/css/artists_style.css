@@ -19,7 +19,7 @@
 
 .artist_info {
 	height: 120px;
-	width: 340px;
+	width: 410px;
 	float: left;
 	#margin-left: 20px;
 }
@@ -34,13 +34,13 @@
 
 .artist_short_description {
 	height: 120px;
-	width: 440px;
+	width: 380px;
 	float: left;
 	#margin-left: 20px;
 }
 .artist_system {
 	height: 120px;
-	width: 130px;
+	width: 120px;
 	float: left;
 	#margin-left: 20px;
 	#border-style: solid;

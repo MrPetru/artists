@@ -5,6 +5,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import mapper, relation, backref
 from sqlalchemy import Table, ForeignKey, Column
 from sqlalchemy.types import Integer, Unicode, Boolean
+from tg import url
 #from sqlalchemy.orm import relation, backref
 
 from artists.model import DeclarativeBase, metadata, DBSession
@@ -69,7 +70,7 @@ class Artist(DeclarativeBase):
         
     @property
     def artist_links(self):
-        return {'reel': self.reellink, 'cv':self.cvlocal, 'contacts':''}
+        return {'reel': self.reellink, 'cv':url('download/' + self.cvlocal), 'contacts':'contacts'}
         
     @property
     def artist_description(self):
