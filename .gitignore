@@ -19,3 +19,4 @@ paster.log
 paster.pid
 */public/themes/local_*
 
+devdata.db
