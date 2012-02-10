@@ -6,6 +6,7 @@
 	float: none;
 	border-style: solid;
 	border-width: 1px;
+	font-size: 14px;
 }
 
 .artist_photo {
@@ -61,7 +62,7 @@
 .artist_info_line {
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
-	height: 21px;
+	#height: 21px;
 	margin-top: 6px;
 }
 .artist_link {
