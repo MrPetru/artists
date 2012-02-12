@@ -4,13 +4,14 @@
 from sqlalchemy import *
 from sqlalchemy.orm import mapper, relation, backref
 from sqlalchemy import Table, ForeignKey, Column
-from sqlalchemy.types import Integer, Unicode, Boolean
+from sqlalchemy.types import Integer, Unicode, Boolean, DateTime
 from tg import url
+from datetime import datetime
 #from sqlalchemy.orm import relation, backref
 
 from artists.model import DeclarativeBase, metadata, DBSession
 
-__all__ = [ 'Artist', 'Phone', 'Email', 'Skype', 'Role', 'Tags', 'Software']
+__all__ = [ 'Artist', 'Phone', 'Email', 'Skype', 'Role', 'Tags', 'Software', 'Reellink']
 
 artist_role = Table('artist_role', metadata,
     Column('artist_id', Integer, ForeignKey('artist.id')),
@@ -40,7 +41,7 @@ class Artist(DeclarativeBase):
     software = relation('Software', secondary=artist_software, backref='artist')
     tags = relation('Tags', secondary=artist_tags, backref='artist')
     sitelink = Column(Unicode, nullable=True)
-    reellink = Column(Unicode, nullable=True)
+    reellink = relation('Reellink', order_by='Reellink.id', backref='artist')
     phone = relation('Phone', order_by='Phone.id', backref='artist')
     email = relation('Email', order_by='Email.id', backref='artist')
     skype = relation('Skype', order_by='Skype.id', backref='artist')
@@ -49,6 +50,8 @@ class Artist(DeclarativeBase):
     newartist = Column(Boolean, nullable=False, default=False)
     note = Column(Unicode, nullable=True)
     address = Column(Unicode, nullable=True)
+    last_update = Column(DateTime, default=datetime.now())
+    rate = Column(Integer, default=0, nullable=False)
 
     # others
     
@@ -70,32 +73,53 @@ class Artist(DeclarativeBase):
         
     @property
     def artist_links(self):
-        return {'reel': self.reellink, 'cv':url('download/' + self.cvlocal), 'contacts':'contacts'}
+        if self.cvlocal:
+            cv = url('download/' + self.cvlocal)
+        else: cv = None
+        
+        if not self.reellink[0:7] == 'http://':
+            sitelink = 'http://' + self.sitelink
+        else:
+            sitelink = self.sitelink
+            
+        return {'sitelink': sitelink, 'cv':cv, 'contacts':'contacts'}
         
     @property
     def artist_description(self):
         return {'artist_short_description':'&nbsp;&nbsp;&nbsp;&nbsp;%s' % self.note,
         'artist_title' : "Short description:"}
+        
+    @property
+    def artist_system(self):
+        lastupdate = str(self.last_update)[:19]
+        artist_to_update = "edit/%s/%s" % (self.firstname, self.lastname)
+        return {'lastupdate':lastupdate, 'artist_to_update':url(artist_to_update)}
 
 class Phone(DeclarativeBase):
     __tablename__ = 'phone'
     #__table_args__ = (UniqueConstraint('artist_id', 'phone'),{})
     id = Column(Integer, primary_key=True)
-    phone = Column(Integer, nullable=False, unique=True)
+    name = Column(Unicode, nullable=False, unique=True)
     artist_id = Column(Integer, ForeignKey('artist.id'))  
     #artist = relation(Artist, backref=backref('phone', order_by=id))
+    
+class Reellink(DeclarativeBase):
+    __tablename__ = 'reellink'
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode, nullable=False, unique=True)
+    artist_id = Column(Integer, ForeignKey('artist.id'))  
     
 class Email(DeclarativeBase):
     __tablename__ = 'email'
     id = Column(Integer, primary_key=True)
-    email = Column(Unicode, nullable=False, unique=True)
+    name = Column(Unicode, nullable=False, unique=True)
     artist_id = Column(Integer, ForeignKey('artist.id')) 
 #    artist = relation(Artist, backref=backref('email', order_by=id))
 
 class Skype(DeclarativeBase):
     __tablename__ = 'skype'
     id = Column(Integer, primary_key=True)
-    skype = Column(Unicode, nullable=False, unique=True)
+    name = Column(Unicode, nullable=False, unique=True)
     artist_id = Column(Integer, ForeignKey('artist.id')) 
 #    artist = relation(Artist, backref=backref('skype', order_by=id))
 

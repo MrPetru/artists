@@ -1,3 +1,21 @@
+body {
+	text-align: left;
+	width: 1200px;
+	margin: 0 auto;
+	padding: 0;
+	font-size: 14px;
+	font-family:"Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;
+}
+
+#content {
+	#margin : 0 10px 10px 10px;
+	#padding: 0 10px;
+	#overflow: hidden;
+	margin: auto;
+	width: 1200px;
+	float: none;
+}
+
 .artist_element {
 	margin: auto;
 	height: 120px;
@@ -9,6 +27,11 @@
 	font-size: 14px;
 }
 
+.artist_table {
+	margin: auto;
+	width: 1200px;
+	float: none;
+}
 .artist_photo {
 	height: 120px;
 	width: 90px;
@@ -83,7 +106,6 @@
 .artist_update_button {
 	margin: auto;
 	text-align: center;
-	#height: 30px;
 	width: 110px;
 	border-style: solid;
 	border-width: 1px;
@@ -93,3 +115,78 @@
 	font-weight: bold;
 	text-decoration: none;
 }
+.artist_last_update {
+    text-align: center;
+}
+
+/* for add form */
+
+.add_new_artist {
+	border-style: solid;
+	border-width: 1px;
+	height: 600px;
+	width: 610px;
+	padding: 16px;
+	font-size: 14px;
+	margin: auto;
+}
+.add_new_artist h3 {
+	margin-left: 60px;
+}
+.add_new_artist textarea {
+    width: 500px;
+    height:100px;
+}
+.add_new_artist td {
+	height: 20px;
+	width: 610px;
+
+}
+.add_new_artist th {
+	#border-style: solid;
+	#border-width: 1px;
+	height: 20px;
+	width: 95px;
+	text-align: right;
+	float: left;
+	padding: 0 5 ;
+}
+
+.add_row_half {
+	height: 20px;
+	width: 302px;
+	float: left;
+}
+.add_input {
+	float: left;
+	height: 20px;
+	width: 500px;
+	text-align: left;
+	padding: 0 5 ;
+}
+.add_input_half {
+	float: left;
+	height: 20px;
+	width: 193px;
+	text-align: left;
+	padding: 0 5 ;
+}
+.add_new_artist input {
+	width: 100%;
+	border: 1px solid;
+	height: 20px;
+}
+
+.add_multirow {
+	width: 610px;
+	
+}
+
+.add_multirow_half {
+	width: 305px;
+
+	float: left;
+}
+
+
+
