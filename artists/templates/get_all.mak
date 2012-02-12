@@ -8,7 +8,7 @@
 
 <div>
     <h2>Artists DataBase</h2>
-
+    ${c.get_all_filter_form.display() | n}
     ${c.get_all_form.display(value=artists) | n}
     
 </div>

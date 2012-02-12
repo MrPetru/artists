@@ -26,6 +26,13 @@ class AddForm(twf.TableForm):
     reellink = twf.TextField(label='Reel Links')
     othercontacts = twf.TextField(label='Other Info:')
     newartist = twf.RadioButtonList(label='New Artist:', options=[(1, 'YES'),(0, 'NO')], default=1)
+
+class FilterForm(twf.TableForm):
+    action = '/artist/get_all'
+    css_class = 'get_all_filter'
+    role = twf.TextField(label='Ruolo:')
+    software = twf.TextField(label='Software:')
+    tags = twf.TextField(label='Tags:')
     
 class Container(twc.Widget):
     template = 'mako:artists.templates.widgets_templates.container'

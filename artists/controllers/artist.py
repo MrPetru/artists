@@ -28,11 +28,12 @@ from formencode import schema
 import shutil, mimetypes, pylons
 from datetime import datetime
 
-from artists.lib.widgets import AristTable, AddForm
+from artists.lib.widgets import AristTable, AddForm, FilterForm
 
 
 #add_form = AddForm()
 get_all_form = AristTable()
+get_all_filter_form = FilterForm()
 add_form = AddForm()
 
 class GetAllTble(tw2.forms.TableLayout):
@@ -52,10 +53,31 @@ class Controller(BaseController):
     
     @require(in_group('admins'))   
     @expose('artists.templates.get_all')
-    def get_all(self):
-        artists = DBSession.query(Artist).order_by(Artist.firstname).all()
+    def get_all(self, tags='', software='', role=''):
+        
+        
+        tags = tags.lower()
+        role = role.lower()
+        software = software.lower()
+        
+        tags_list = helpers.get_list_from_string(tags)
+        software_list = helpers.get_list_from_string(software)
+        role_list = helpers.get_list_from_string(role)
+        
+        artists = DBSession.query(Artist).order_by(Artist.firstname) #.all()
+        
+        for t in tags_list:
+            artists = artists.filter(Artist.tags.any(Tags.name == t))
+        for r in role_list:
+            artists = artists.filter(Artist.role.any(Role.name == r))
+        for s in software_list:
+            artists = artists.filter(Artist.software.any(Software.name == s))
+            
+        filters = {'tags' : tags, 'software' : software, 'role' : role}
+        
         tmpl_context.get_all_form = get_all_form
-        return dict(page='artists', artists=artists)
+        tmpl_context.get_all_filter_form = get_all_filter_form(value=filters)
+        return dict(page='artists', artists=artists.all())
     
     @require(in_group('admins')) 
     @expose('artists.templates.add_page')
@@ -70,6 +92,8 @@ class Controller(BaseController):
     @require(in_group('admins')) 
     @expose('artists.templates.add_page')    
     def edit(self, firstname, lastname):
+        firstname = firstname.title()
+        lastname = lastname.title()
         artist = DBSession.query(Artist).filter_by(firstname=firstname, lastname=lastname).all()
         data = artist[0].__dict__
         role = ''
@@ -102,6 +126,13 @@ class Controller(BaseController):
     def update(self, firstname='', lastname='', sitelink='', reellink='',
                     role='', software='', tags='', phone='', email='', skype='', othercontacts='',
                     note='', newartist='', cv_upload='', vote=0):
+                    
+        firstname = firstname.title()
+        lastname = lastname.title()
+        tags = tags.lower()
+        role = role.lower()
+        software = software.lower()
+        
         artist = DBSession.query(Artist).filter_by(firstname=firstname, lastname=lastname).all()[0]
         
         artist.firstname=firstname
@@ -183,6 +214,12 @@ class Controller(BaseController):
     def post_add(self, firstname='', lastname='', sitelink='', reellink='',
                     role='', software='', tags='', phone='', email='', skype='', othercontacts='',
                     note='', newartist='', cv_upload='', vote=0):
+        
+        firstname = firstname.title()
+        lastname = lastname.title()
+        tags = tags.lower()
+        role = role.lower()
+        software = software.lower()
                     
         artist = DBSession.query(Artist).filter_by(firstname=firstname, lastname=lastname).all()
         if len (artist) > 0:
