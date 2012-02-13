@@ -72,6 +72,7 @@ class ArtistSystem(twc.CompoundWidget):
     text = 'aggiornato il:'
     lastupdate = Container(css_class = "artist_last_update")
     artist_to_update = ArtistUpdateButton(css_class='artist_update_button')
+    rate = Container()
 
 class ArtistRow(twc.CompoundWidget):
     template = 'mako:artists.templates.widgets_templates.artist_row'

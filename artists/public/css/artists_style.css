@@ -188,5 +188,18 @@ body {
 	float: left;
 }
 
+.rating_bar {
+  width: 55px;
+  margin: auto;
+  background: url('../artists_images/star_x_grey.gif') 0 0 repeat-x;
+}
+
+.rating_bar div {
+  height: 12px;
+  background: url('../artists_images/star_x_orange.gif') 0 0 repeat-x;
+}
+
+
+
 
 
