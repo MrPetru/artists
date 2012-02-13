@@ -97,7 +97,7 @@ class Artist(DeclarativeBase):
     def artist_system(self):
         lastupdate = str(self.last_update)[:19]
         artist_to_update = "edit/%s/%s" % (self.firstname, self.lastname)
-        return {'lastupdate':lastupdate, 'artist_to_update':url(artist_to_update), 'rate':str(self.rate)}
+        return {'lastupdate':lastupdate, 'artist_to_update':url(artist_to_update), 'rate':str(self.rate * 2 *10)}
 
 class Phone(DeclarativeBase):
     __tablename__ = 'phone'
