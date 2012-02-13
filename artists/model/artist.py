@@ -79,9 +79,9 @@ class Artist(DeclarativeBase):
         else: cv = None
         
         
-        if (len(self.reellink) > 0) and (not self.reellink[0:7] == 'http://'):
+        if (len(self.sitelink) > 0) and (not self.sitelink[0:7] == 'http://'):
             sitelink = 'http://' + self.sitelink
-        elif (len(self.reellink) > 0) and (self.reellink[0:7] == 'http://'):
+        elif (len(self.sitelink) > 0) and (self.sitelink[0:7] == 'http://'):
             sitelink = self.sitelink
         else:
             sitelink = None
