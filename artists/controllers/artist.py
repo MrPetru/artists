@@ -125,7 +125,7 @@ class Controller(BaseController):
     @validate(add_form, error_handler=edit)
     def update(self, firstname='', lastname='', sitelink='', reellink='',
                     role='', software='', tags='', phone='', email='', skype='', othercontacts='',
-                    note='', newartist='', cv_upload='', vote=0):
+                    note='', newartist='', cv_upload='', presentation='' , rate=0):
                     
         firstname = firstname.title()
         lastname = lastname.title()
@@ -142,7 +142,7 @@ class Controller(BaseController):
         artist.newartist = newartist
         artist.othercontacts = othercontacts
         artist.last_update = datetime.now()
-        artist.rate=0
+        artist.rate=int(rate)
         
         if hasattr(cv_upload, 'filename'):
             ext = shutil.os.path.splitext(cv_upload.filename)[1]
@@ -152,6 +152,15 @@ class Controller(BaseController):
             f.write(cv_upload.file.read())
             f.close()
             artist.cvlocal = ("%s_%s%s" % (firstname, lastname, ext))
+            
+        if hasattr(presentation, 'filename'):
+            ext = shutil.os.path.splitext(presentation.filename)[1]
+            dest_path = config['presentation_repo']
+            dest_path = shutil.os.path.join(dest_path,"%s_%s%s" % (firstname, lastname, ext))
+            f = open(dest_path, 'wb')
+            f.write(presentation.file.read())
+            f.close()
+            artist.presentation = ("%s_%s%s" % (firstname, lastname, ext))
         
         def update_column(info, artist, query, table):
             data_list = helpers.get_list_from_string(info)
@@ -182,27 +191,6 @@ class Controller(BaseController):
         update_column(email, artist.email, DBSession.query(Email), Email)
         update_column(skype, artist.skype, DBSession.query(Skype), Skype)
         
-            
-##        data_list = helpers.get_list_from_string(role)
-##        artist_role_list =[]
-##        for_remove = []
-##        for r in artist.role:
-##            if r.name in data_list:
-##                artist_role_list.append(r.name)
-##            else:
-##                for_remove.append(r)
-##        for r in for_remove:
-##            artist.role.remove(r)
-##            
-##        for r in data_list:
-##            if r not in artist_role_list:
-##                query_result = DBSession.query(Role).filter_by(name=r).all()
-##                if len(query_result) == 0:
-##                    query_result = Role(name=r)
-##                else:
-##                    query_result = DBSession.query(Role).filter_by(name=r).one()
-##                artist.role.append(query_result)
-        
         DBSession.add(artist)        
         transaction.commit()
         redirect('/artist/get_all')    
@@ -213,7 +201,7 @@ class Controller(BaseController):
     @validate(add_form, error_handler=add)
     def post_add(self, firstname='', lastname='', sitelink='', reellink='',
                     role='', software='', tags='', phone='', email='', skype='', othercontacts='',
-                    note='', newartist='', cv_upload='', vote=0):
+                    note='', newartist='', cv_upload='', presentation='', rate=0):
         
         firstname = firstname.title()
         lastname = lastname.title()
@@ -227,7 +215,7 @@ class Controller(BaseController):
         
         artist = Artist(firstname=firstname, lastname=lastname, sitelink=sitelink, 
                     note = note, newartist = newartist, othercontacts = othercontacts,
-                    last_update = datetime.now(), rate=0)
+                    last_update = datetime.now(), rate=int(rate))
         
         if hasattr(cv_upload, 'filename'): #== 'instance': # != ('' or None):
             ext = shutil.os.path.splitext(cv_upload.filename)[1]
@@ -237,6 +225,15 @@ class Controller(BaseController):
             f.write(cv_upload.file.read())
             f.close()
             artist.cvlocal = ("%s_%s%s" % (firstname, lastname, ext))
+            
+        if hasattr(presentation, 'filename'):
+            ext = shutil.os.path.splitext(presentation.filename)[1]
+            dest_path = config['presentation_repo']
+            dest_path = shutil.os.path.join(dest_path,"%s_%s%s" % (firstname, lastname, ext))
+            f = open(dest_path, 'wb')
+            f.write(presentation.file.read())
+            f.close()
+            artist.presentation = ("%s_%s%s" % (firstname, lastname, ext))
         
         data_list = helpers.get_list_from_string(role)
         for d in data_list:

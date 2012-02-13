@@ -16,16 +16,18 @@ class AddForm(twf.TableForm):
     lastname = twf.TextField(label='Cognome:', validator=NotEmpty)
     role = twf.TextField(label='Ruolo:', validator=NotEmpty)
     software = twf.TextField(label='Software:', validator=NotEmpty)
-    tags = twf.TextField(label='Tags:', validator=NotEmpty)
+    tags = twf.TextField(label='Tags:')
     phone = twf.TextField(label='Phone:')
-    email = twf.TextField(label='Email:')
+    email = twf.TextField(label='Email:', validator=NotEmpty)
     skype = twf.TextField(label='Skype:')
-    cv_upload = FileInput(label='CV Uplod:', size='43')
+    presentation = FileInput(label='Lettera:', size='40')
+    cv_upload = FileInput(label='CV Uplod:', size='40')
     note = twf.TextArea(label='Description:')
     sitelink = twf.TextField(label='Site Links:')
     reellink = twf.TextField(label='Reel Links')
     othercontacts = twf.TextField(label='Other Info:')
     newartist = twf.RadioButtonList(label='New Artist:', options=[(1, 'YES'),(0, 'NO')], default=1)
+    rate = twf.TextField(label='Rating:', validator=Int, value='0')
 
 class FilterForm(twf.TableForm):
     action = '/artist/get_all'

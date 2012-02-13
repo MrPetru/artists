@@ -46,6 +46,7 @@ class Artist(DeclarativeBase):
     email = relation('Email', order_by='Email.id', backref='artist')
     skype = relation('Skype', order_by='Skype.id', backref='artist')
     cvlocal = Column(Unicode, nullable=True)
+    presentation = Column(Unicode, nullable=True)
     othercontacts = Column(Unicode, nullable=True)
     newartist = Column(Boolean, nullable=False, default=False)
     note = Column(Unicode, nullable=True)
@@ -77,10 +78,13 @@ class Artist(DeclarativeBase):
             cv = url('download/' + self.cvlocal)
         else: cv = None
         
-        if not self.reellink[0:7] == 'http://':
+        
+        if (len(self.reellink) > 0) and (not self.reellink[0:7] == 'http://'):
             sitelink = 'http://' + self.sitelink
-        else:
+        elif (len(self.reellink) > 0) and (self.reellink[0:7] == 'http://'):
             sitelink = self.sitelink
+        else:
+            sitelink = None
             
         return {'sitelink': sitelink, 'cv':cv, 'contacts':'contacts'}
         
