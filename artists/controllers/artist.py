@@ -127,11 +127,11 @@ class Controller(BaseController):
                     role=u'', software=u'', tags=u'', phone=u'', email=u'', skype=u'', othercontacts=u'',
                     note=u'', newartist=False, cv_upload='', presentation='' , rate=0):
                     
-        firstname = firstname.title().decode('utf-8')
-        lastname = lastname.title().decode('utf-8')
-        tags = tags.lower().decode('utf-8')
-        role = role.lower().decode('utf-8')
-        software = software.lower().decode('utf-8')
+        firstname = firstname.title()
+        lastname = lastname.title()
+        tags = tags.lower()
+        role = role.lower()
+        software = software.lower()
         
         artist = DBSession.query(Artist).filter_by(firstname=firstname, lastname=lastname).all()[0]
         
@@ -203,11 +203,11 @@ class Controller(BaseController):
                     role=u'', software=u'', tags=u'', phone=u'', email=u'', skype=u'', othercontacts=u'',
                     note=u'', newartist=False, cv_upload='', presentation='', rate=0):
         
-        firstname = firstname.title().decode('utf-8')
-        lastname = lastname.title().decode('utf-8')
-        tags = tags.lower().decode('utf-8')
-        role = role.lower().decode('utf-8')
-        software = software.lower().decode('utf-8')
+        firstname = firstname.title()
+        lastname = lastname.title()
+        tags = tags.lower()
+        role = role.lower()
+        software = software.lower()
                     
         artist = DBSession.query(Artist).filter_by(firstname=firstname, lastname=lastname).all()
         if len (artist) > 0:
