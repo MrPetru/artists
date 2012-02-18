@@ -90,7 +90,7 @@ class Artist(DeclarativeBase):
             reellink = self.reellink[0].name
         else:
             reellink = None
-        if (reellink) != None ) and (not reellink[0:7] == 'http://'):
+        if (reellink != None ) and (not reellink[0:7] == 'http://'):
             reellink = 'http://' + reellink
         elif (reellink != None ) and (reellink[0:7] == 'http://'):
             reellink = reellink
