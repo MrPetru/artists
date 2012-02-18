@@ -86,7 +86,18 @@ class Artist(DeclarativeBase):
         else:
             sitelink = None
             
-        return {'sitelink': sitelink, 'cv':cv, 'contacts':'contacts'}
+        if len(self.reellink) > 0:
+            reellink = self.reellink[0].name
+        else:
+            reellink = None
+        if (len(reellink) > 0) and (not reellink[0:7] == 'http://'):
+            reellink = 'http://' + reellink
+        elif (len(reellink) > 0) and (reellink[0:7] == 'http://'):
+            reellink = reellink
+        else:
+            reellink = None
+            
+        return {'sitelink': sitelink, 'cv':cv, 'contacts':'contacts', 'reellink':reellink}
         
     @property
     def artist_description(self):

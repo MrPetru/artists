@@ -54,6 +54,7 @@ class ArtistLink(Container):
 class ArtistLinks(twc.CompoundWidget):
     template = 'mako:artists.templates.widgets_templates.artist_links'
     void = Container(css_class = "artist_link", text='')
+    reellink = ArtistLink(css_class = "artist_link", text='REEL')
     sitelink = ArtistLink(css_class = "artist_link", text='SITE')
     cv = ArtistLink(css_class = "artist_link", text='CV')
     contacts = ArtistLink(css_class = "artist_link", text='CONTACTS')

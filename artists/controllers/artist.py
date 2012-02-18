@@ -53,18 +53,18 @@ class Controller(BaseController):
     
     @require(in_group('admins'))   
     @expose('artists.templates.get_all')
-    def get_all(self, tags='', software='', role=''):
+    def get_all(self, tags=u'', software=u'', role=u''):
         
         
-        tags = tags.lower()
-        role = role.lower()
-        software = software.lower()
+        tags = tags.lower().decode('utf-8')
+        role = role.lower().decode('utf-8')
+        software = software.lower().decode('utf-8')
         
         tags_list = helpers.get_list_from_string(tags)
         software_list = helpers.get_list_from_string(software)
         role_list = helpers.get_list_from_string(role)
         
-        artists = DBSession.query(Artist).order_by(Artist.firstname) #.all()
+        artists = DBSession.query(Artist).order_by(Artist.firstname)
         
         for t in tags_list:
             artists = artists.filter(Artist.tags.any(Tags.name == t))
@@ -92,8 +92,8 @@ class Controller(BaseController):
     @require(in_group('admins')) 
     @expose('artists.templates.add_page')    
     def edit(self, firstname, lastname):
-        firstname = firstname.title()
-        lastname = lastname.title()
+        firstname = firstname.title().decode('utf-8')
+        lastname = lastname.title().decode('utf-8')
         artist = DBSession.query(Artist).filter_by(firstname=firstname, lastname=lastname).all()
         data = artist[0].__dict__
         role = ''
@@ -123,15 +123,15 @@ class Controller(BaseController):
         
     @expose()
     @validate(add_form, error_handler=edit)
-    def update(self, firstname='', lastname='', sitelink='', reellink='',
-                    role='', software='', tags='', phone='', email='', skype='', othercontacts='',
-                    note='', newartist='', cv_upload='', presentation='' , rate=0):
+    def update(self, firstname, lastname, sitelink=u'', reellink=u'',
+                    role=u'', software=u'', tags=u'', phone=u'', email=u'', skype=u'', othercontacts=u'',
+                    note=u'', newartist=False, cv_upload='', presentation='' , rate=0):
                     
-        firstname = firstname.title()
-        lastname = lastname.title()
-        tags = tags.lower()
-        role = role.lower()
-        software = software.lower()
+        firstname = firstname.title().decode('utf-8')
+        lastname = lastname.title().decode('utf-8')
+        tags = tags.lower().decode('utf-8')
+        role = role.lower().decode('utf-8')
+        software = software.lower().decode('utf-8')
         
         artist = DBSession.query(Artist).filter_by(firstname=firstname, lastname=lastname).all()[0]
         
@@ -151,7 +151,7 @@ class Controller(BaseController):
             f = open(dest_path, 'wb')
             f.write(cv_upload.file.read())
             f.close()
-            artist.cvlocal = ("%s_%s%s" % (firstname, lastname, ext))
+            artist.cvlocal = ("%s_%s%s" % (firstname, lastname, ext)).decode('utf-8')
             
         if hasattr(presentation, 'filename'):
             ext = shutil.os.path.splitext(presentation.filename)[1]
@@ -160,7 +160,7 @@ class Controller(BaseController):
             f = open(dest_path, 'wb')
             f.write(presentation.file.read())
             f.close()
-            artist.presentation = ("%s_%s%s" % (firstname, lastname, ext))
+            artist.presentation = ("%s_%s%s" % (firstname, lastname, ext)).decode('utf-8')
         
         def update_column(info, artist, query, table):
             data_list = helpers.get_list_from_string(info)
@@ -199,15 +199,15 @@ class Controller(BaseController):
     
     @expose()
     @validate(add_form, error_handler=add)
-    def post_add(self, firstname='', lastname='', sitelink='', reellink='',
-                    role='', software='', tags='', phone='', email='', skype='', othercontacts='',
-                    note='', newartist='', cv_upload='', presentation='', rate=0):
+    def post_add(self, firstname, lastname, sitelink=u'', reellink=u'',
+                    role=u'', software=u'', tags=u'', phone=u'', email=u'', skype=u'', othercontacts=u'',
+                    note=u'', newartist=False, cv_upload='', presentation='', rate=0):
         
-        firstname = firstname.title()
-        lastname = lastname.title()
-        tags = tags.lower()
-        role = role.lower()
-        software = software.lower()
+        firstname = firstname.title().decode('utf-8')
+        lastname = lastname.title().decode('utf-8')
+        tags = tags.lower().decode('utf-8')
+        role = role.lower().decode('utf-8')
+        software = software.lower().decode('utf-8')
                     
         artist = DBSession.query(Artist).filter_by(firstname=firstname, lastname=lastname).all()
         if len (artist) > 0:
@@ -224,7 +224,7 @@ class Controller(BaseController):
             f = open(dest_path, 'wb')
             f.write(cv_upload.file.read())
             f.close()
-            artist.cvlocal = ("%s_%s%s" % (firstname, lastname, ext))
+            artist.cvlocal = ("%s_%s%s" % (firstname, lastname, ext)).decode('utf-8')
             
         if hasattr(presentation, 'filename'):
             ext = shutil.os.path.splitext(presentation.filename)[1]
@@ -233,7 +233,7 @@ class Controller(BaseController):
             f = open(dest_path, 'wb')
             f.write(presentation.file.read())
             f.close()
-            artist.presentation = ("%s_%s%s" % (firstname, lastname, ext))
+            artist.presentation = ("%s_%s%s" % (firstname, lastname, ext)).decode('utf-8')
         
         data_list = helpers.get_list_from_string(role)
         for d in data_list:
@@ -312,6 +312,8 @@ class Controller(BaseController):
     @expose()
     def download(self, file_name):
         firstname, lastname = file_name.split('_')
+        firstname = firstname.decode('utf-8')
+        lastname = lastname.decode('utf-8')
         artist = DBSession.query(Artist).filter_by(firstname=firstname, lastname=lastname).all()
         cvlocal = artist[0].cvlocal
         path = shutil.os.path.join(config['cv_repo'], cvlocal)
