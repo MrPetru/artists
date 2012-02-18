@@ -86,13 +86,13 @@ class Artist(DeclarativeBase):
         else:
             sitelink = None
             
-        if len(self.reellink) > 0:
+        if len(self.reellink) > 0 and self.reellink != None:
             reellink = self.reellink[0].name
         else:
             reellink = None
-        if (len(reellink) > 0) and (not reellink[0:7] == 'http://'):
+        if (reellink) != None ) and (not reellink[0:7] == 'http://'):
             reellink = 'http://' + reellink
-        elif (len(reellink) > 0) and (reellink[0:7] == 'http://'):
+        elif (reellink != None ) and (reellink[0:7] == 'http://'):
             reellink = reellink
         else:
             reellink = None
